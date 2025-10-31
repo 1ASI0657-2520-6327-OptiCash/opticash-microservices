@@ -27,3 +27,13 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
 
+authorization:
+  jwt:
+    secret: "mysupersecretkeythatshouldbeatleast32chars"
+    expiration:
+      days: 7
+
+documentation:
+  application:
+    description: "Microservicio de autenticación y autorización (IAM)"
+    version: "1.0.0"
