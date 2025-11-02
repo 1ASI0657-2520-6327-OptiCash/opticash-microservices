@@ -7,11 +7,11 @@
 		<artifactId>opticash-parent-microservices</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<groupId>com.fiscalliance.gateway</groupId>
-	<artifactId>microservice-gateway</artifactId>
+	<groupId>com.fiscalliance.membercontributions</groupId>
+	<artifactId>microservice-membercontributions</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>microservice-gateway</name>
-	<description>api-gateway</description>
+	<name>microservice-membercontribution</name>
+	<description>Spring Boot Microservice Member Contributions</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -26,11 +26,7 @@
 		<url/>
 	</scm>
 	<properties>
-<<<<<<< HEAD
-		<java.version>22</java.version>
-=======
-        <java.version>17</java.version>
->>>>>>> 44ac0 (Add MemberContribution module)
+        <maven.compiler.release>17</maven.compiler.release>
 		<spring-cloud.version>2024.0.2</spring-cloud.version>
 	</properties>
 	<dependencies>
@@ -39,24 +35,67 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-gateway-mvc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
+		<!-- Dependecias propias de IAM -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.github.encryptorcode</groupId>
+			<artifactId>pluralize</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.12.6</version>
+		</dependency>
+		<!-- JWT impl y serialización -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.12.6</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.12.6</version>
+			<scope>runtime</scope>
+		</dependency>
 
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>com.fiscalliance.iam</groupId>
+            <artifactId>microservice-iam</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>

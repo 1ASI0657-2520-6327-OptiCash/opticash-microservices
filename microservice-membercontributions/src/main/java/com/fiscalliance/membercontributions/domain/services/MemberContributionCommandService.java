@@ -1,0 +1,13 @@
+package com.fiscalliance.membercontributions.domain.services;
+
+import com.fiscalliance.membercontributions.domain.models.aggregates.MemberContribution;
+import com.fiscalliance.membercontributions.domain.models.commands.CreateMemberContributionCommand;
+
+import java.util.Optional;
+
+public interface MemberContributionCommandService {
+    Optional<MemberContribution> handle(CreateMemberContributionCommand command);
+    Optional<MemberContribution> update(Long id, CreateMemberContributionCommand command);
+    boolean delete(Long id);
+}
+

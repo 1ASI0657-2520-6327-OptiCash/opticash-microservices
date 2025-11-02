@@ -22,11 +22,20 @@
     <module>microservice-config</module>
     <module>microservice-iam</module>
     <module>microservice-bills</module>
+<<<<<<< HEAD
+=======
+      <module>microservice-membercontributions</module>
+
+>>>>>>> 44ac0 (Add MemberContribution module)
   </modules>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+<<<<<<< HEAD
     <maven.compiler.release>22</maven.compiler.release>
+=======
+      <maven.compiler.release>17</maven.compiler.release>
+>>>>>>> 44ac0 (Add MemberContribution module)
   </properties>
 
   <dependencies>
