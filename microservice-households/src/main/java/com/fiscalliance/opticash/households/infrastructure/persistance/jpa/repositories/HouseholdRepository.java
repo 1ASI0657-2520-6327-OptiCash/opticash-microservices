@@ -1,6 +1,6 @@
-package com.example.spliteasybackend.households.infrastructure.persistance.jpa.repositories;
+package com.fiscalliance.opticash.households.infrastructure.persistance.jpa.repositories;
 
-import com.example.spliteasybackend.households.domain.models.aggregates.Household;
+import com.fiscalliance.opticash.households.domain.models.aggregates.Household;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

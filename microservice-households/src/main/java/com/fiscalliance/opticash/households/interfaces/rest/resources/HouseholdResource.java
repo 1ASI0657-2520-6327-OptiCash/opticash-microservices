@@ -1,4 +1,4 @@
-package com.example.spliteasybackend.households.interfaces.rest.resources;
+package com.fiscalliance.opticash.households.interfaces.rest.resources;
 
 public record HouseholdResource(
         Long id,
