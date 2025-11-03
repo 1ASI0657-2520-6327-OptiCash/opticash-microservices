@@ -6,8 +6,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication(scanBasePackages = {
-		"com.fiscalliance.iam",
-		"com.fiscalliance.shared"
+        "com.fiscalliance.iam",
+        "com.fiscalliance.shared"
 })
 @EnableJpaAuditing
 @EnableDiscoveryClient
