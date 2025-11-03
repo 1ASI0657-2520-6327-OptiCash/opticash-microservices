@@ -1,0 +1,31 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: msvc-membercontributions
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/opticash_membercontributions_db
+    username: postgres
+    password: ruben123
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+# Configuración de seguridad / JWT
+authorization:
+  jwt:
+    secret: "mysupersecretkeythatshouldbeatleast32chars"
+    expiration:
+      days: 7
+
+# Documentación de la API
+documentation:
+  application:
+    description: "Microservicio de contribución de miembros"
+    version: "1.0.0"

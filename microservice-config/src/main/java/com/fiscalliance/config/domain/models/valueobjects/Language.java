@@ -1,0 +1,24 @@
+package com.fiscalliance.config.domain.models.valueobjects;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+
+/**
+ * Value Object que representa el idioma preferido del usuario.
+ */
+@Embeddable
+public class Language {
+
+    @Column(name = "language")
+    private String code;
+
+    protected Language() {}
+
+    public Language(String code) {
+        this.code = code;
+    }
+
+    public String code() {
+        return code;
+    }
+}
