@@ -24,13 +24,13 @@
     </properties>
 
     <dependencies>
-        <!-- Core Spring Boot -->
+        <!-- Web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- Actuator para métricas y monitoreo -->
+        <!-- Actuator -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
@@ -41,48 +41,26 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Seguridad + JWT -->
+        <!-- Swagger / OpenAPI (sin seguridad) -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-api</artifactId>
-            <version>0.12.6</version>
-        </dependency>
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-impl</artifactId>
-            <version>0.12.6</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-jackson</artifactId>
-            <version>0.12.6</version>
-            <scope>runtime</scope>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.5.0</version>
         </dependency>
 
-        <!-- Utilidad para pluralización (opcional) -->
-        <dependency>
-            <groupId>io.github.encryptorcode</groupId>
-            <artifactId>pluralize</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-
-        <!-- Dependencia hacia IAM, si es necesaria -->
+        <!-- IAM opcional (por ahora sin usar) -->
         <dependency>
             <groupId>com.fiscalliance.iam</groupId>
             <artifactId>microservice-iam</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
 
         <!-- Testing -->
@@ -113,5 +91,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
