@@ -1,0 +1,107 @@
+package com.fiscalliance.contributions.interfaces.rest;
+
+
+import com.fiscalliance.contributions.domain.models.queries.GetAllContributionsQuery;
+import com.fiscalliance.contributions.domain.models.queries.GetContributionByIdQuery;
+import com.fiscalliance.contributions.domain.services.ContributionCommandService;
+import com.fiscalliance.contributions.domain.services.ContributionQueryService;
+import com.fiscalliance.contributions.interfaces.rest.resources.ContributionResource;
+import com.fiscalliance.contributions.interfaces.rest.resources.CreateContributionResource;
+import com.fiscalliance.contributions.interfaces.rest.transform.ContributionResourceFromEntityAssembler;
+import com.fiscalliance.contributions.interfaces.rest.transform.CreateContributionCommandFromResourceAssembler;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping(value = "/api/v1/contributions", produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Contributions", description = "Available Contribution Endpoints")
+public class ContributionsController {
+
+    private final ContributionCommandService commandService;
+    private final ContributionQueryService queryService;
+
+    public ContributionsController(ContributionCommandService commandService,
+                                   ContributionQueryService queryService) {
+        this.commandService = commandService;
+        this.queryService = queryService;
+    }
+
+    @PostMapping
+    // @PreAuthorize("hasAuthority('ROLE_REPRESENTANTE')")
+    @Operation(summary = "Create a contribution")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Contribution created"),
+            @ApiResponse(responseCode = "400", description = "Bad request")
+    })
+    public ResponseEntity<ContributionResource> createContribution(@RequestBody CreateContributionResource resource) {
+        var command = CreateContributionCommandFromResourceAssembler.toCommandFromResource(resource);
+        var result = commandService.handle(command);
+        if (result.isEmpty()) return ResponseEntity.badRequest().build();
+        var response = ContributionResourceFromEntityAssembler.toResourceFromEntity(result.get());
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    @Operation(summary = "Get all contributions")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Contributions found"),
+            @ApiResponse(responseCode = "404", description = "No contributions found")
+    })
+    public ResponseEntity<List<ContributionResource>> getAllContributions() {
+        var result = queryService.handle(new GetAllContributionsQuery());
+        if (result.isEmpty()) return ResponseEntity.notFound().build();
+        var resources = result.stream()
+                .map(ContributionResourceFromEntityAssembler::toResourceFromEntity)
+                .toList();
+        return ResponseEntity.ok(resources);
+    }
+
+    @GetMapping("/{contributionId}")
+    @Operation(summary = "Get contribution by ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Contribution found"),
+            @ApiResponse(responseCode = "404", description = "Contribution not found")
+    })
+    public ResponseEntity<ContributionResource> getContributionById(@PathVariable Long contributionId) {
+        var query = new GetContributionByIdQuery(contributionId);
+        var result = queryService.handle(query);
+        if (result.isEmpty()) return ResponseEntity.notFound().build();
+        var resource = ContributionResourceFromEntityAssembler.toResourceFromEntity(result.get());
+        return ResponseEntity.ok(resource);
+    }
+
+    @PutMapping("/{contributionId}")
+    @Operation(summary = "Update contribution by ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Contribution updated"),
+            @ApiResponse(responseCode = "404", description = "Contribution not found")
+    })
+    public ResponseEntity<ContributionResource> updateContributionById(@PathVariable Long contributionId,
+                                                                       @RequestBody CreateContributionResource resource) {
+        var command = CreateContributionCommandFromResourceAssembler.toCommandFromResource(resource);
+        var result = commandService.update(contributionId, command);
+        if (result.isEmpty()) return ResponseEntity.notFound().build();
+        var updatedResource = ContributionResourceFromEntityAssembler.toResourceFromEntity(result.get());
+        return ResponseEntity.ok(updatedResource);
+    }
+
+    @DeleteMapping("/{contributionId}")
+    // @PreAuthorize("hasAuthority('ROLE_REPRESENTANTE')")
+    @Operation(summary = "Delete contribution by ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Contribution deleted"),
+            @ApiResponse(responseCode = "404", description = "Contribution not found")
+    })
+    public ResponseEntity<Void> deleteContributionById(@PathVariable Long contributionId) {
+        boolean deleted = commandService.delete(contributionId);
+        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    }
+}
