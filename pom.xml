@@ -23,6 +23,7 @@
     <module>microservice-iam</module>
     <module>microservice-bills</module>
       <module>microservice-households</module>
+      <module>microservice-householdmembers</module>
   </modules>
 
   <properties>

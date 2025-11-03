@@ -1,9 +1,9 @@
 server:
-  port: 8090
+  port: 8091
 
 spring:
   application:
-    name: microservice-household
+    name: microservice-householdMember
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/opticash-households-db
