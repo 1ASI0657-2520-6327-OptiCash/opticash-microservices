@@ -1,9 +1,9 @@
-package com.fiscalliance.membercontributions.application.internal.commandservices;
+package com.fiscalliance.iam.application.internal.commandservices;
 
-import com.fiscalliance.membercontributions.domain.models.aggregates.MemberContribution;
-import com.fiscalliance.membercontributions.domain.models.commands.CreateMemberContributionCommand;
-import com.fiscalliance.membercontributions.domain.services.MemberContributionCommandService;
-import com.fiscalliance.membercontributions.infrastructure.persistance.jpa.repositories.MemberContributionRepository;
+import com.fiscalliance.iam.domain.models.aggregates.MemberContribution;
+import com.fiscalliance.iam.domain.models.commands.CreateMemberContributionCommand;
+import com.fiscalliance.iam.domain.services.MemberContributionCommandService;
+import com.fiscalliance.iam.infrastructure.persistance.jpa.repositories.MemberContributionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

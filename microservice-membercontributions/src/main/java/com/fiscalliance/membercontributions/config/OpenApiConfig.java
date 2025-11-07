@@ -1,4 +1,4 @@
-package com.fiscalliance.membercontributions.config;
+package com.fiscalliance.iam.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;

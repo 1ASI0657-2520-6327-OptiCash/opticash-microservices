@@ -1,8 +1,8 @@
-package com.fiscalliance.membercontributions.interfaces.rest.transform;
+package com.fiscalliance.iam.interfaces.rest.transform;
 
-import com.fiscalliance.membercontributions.domain.models.commands.CreateMemberContributionCommand;
-import com.fiscalliance.membercontributions.domain.models.valueobjects.Status;
-import com.fiscalliance.membercontributions.interfaces.rest.resources.CreateMemberContributionResource;
+import com.fiscalliance.iam.domain.models.commands.CreateMemberContributionCommand;
+import com.fiscalliance.iam.domain.models.valueobjects.Status;
+import com.fiscalliance.iam.interfaces.rest.resources.CreateMemberContributionResource;
 
 public class CreateMemberContributionCommandFromResourceAssembler {
 

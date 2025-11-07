@@ -1,4 +1,4 @@
-package com.fiscalliance.membercontributions.domain.models.valueobjects;
+package com.fiscalliance.iam.domain.models.valueobjects;
 
 public enum Status {
     PENDIENTE,

@@ -15,9 +15,6 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
-  config:
-    import: optional:configserver:http://localhost:8888
-
 eureka:
   instance:
     hostname: localhost
@@ -29,5 +26,5 @@ eureka:
 
 documentation:
   application:
-    description: "Microservicio de autenticación y autorización (IAM)"
+    description: "Microservicio de autenticaciï¿½n y autorizaciï¿½n (IAM)"
     version: "1.0.0"

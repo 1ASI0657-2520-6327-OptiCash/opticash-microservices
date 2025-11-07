@@ -1,7 +1,7 @@
-package com.fiscalliance.membercontributions.domain.models.aggregates;
+package com.fiscalliance.iam.domain.models.aggregates;
 
-import com.fiscalliance.membercontributions.domain.models.commands.CreateMemberContributionCommand;
-import com.fiscalliance.membercontributions.domain.models.valueobjects.Status;
+import com.fiscalliance.iam.domain.models.commands.CreateMemberContributionCommand;
+import com.fiscalliance.iam.domain.models.valueobjects.Status;
 import com.fiscalliance.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.fiscalliance.membercontributions;
+package com.fiscalliance.iam;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

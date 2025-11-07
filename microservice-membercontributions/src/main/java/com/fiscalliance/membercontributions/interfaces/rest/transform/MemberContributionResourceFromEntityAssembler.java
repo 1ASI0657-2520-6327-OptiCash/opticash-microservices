@@ -1,7 +1,7 @@
-package com.fiscalliance.membercontributions.interfaces.rest.transform;
+package com.fiscalliance.iam.interfaces.rest.transform;
 
-import com.fiscalliance.membercontributions.domain.models.aggregates.MemberContribution;
-import com.fiscalliance.membercontributions.interfaces.rest.resources.MemberContributionResource;
+import com.fiscalliance.iam.domain.models.aggregates.MemberContribution;
+import com.fiscalliance.iam.interfaces.rest.resources.MemberContributionResource;
 
 public class MemberContributionResourceFromEntityAssembler {
 

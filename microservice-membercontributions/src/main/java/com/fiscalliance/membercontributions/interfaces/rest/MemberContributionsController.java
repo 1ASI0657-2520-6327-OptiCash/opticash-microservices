@@ -1,14 +1,14 @@
-package com.fiscalliance.membercontributions.interfaces.rest;
+package com.fiscalliance.iam.interfaces.rest;
 
-import com.fiscalliance.membercontributions.domain.models.aggregates.MemberContribution;
-import com.fiscalliance.membercontributions.domain.models.queries.GetAllMemberContributionsQuery;
-import com.fiscalliance.membercontributions.domain.models.queries.GetMemberContributionByIdQuery;
-import com.fiscalliance.membercontributions.domain.services.MemberContributionCommandService;
-import com.fiscalliance.membercontributions.domain.services.MemberContributionQueryService;
-import com.fiscalliance.membercontributions.interfaces.rest.resources.CreateMemberContributionResource;
-import com.fiscalliance.membercontributions.interfaces.rest.resources.MemberContributionResource;
-import com.fiscalliance.membercontributions.interfaces.rest.transform.CreateMemberContributionCommandFromResourceAssembler;
-import com.fiscalliance.membercontributions.interfaces.rest.transform.MemberContributionResourceFromEntityAssembler;
+import com.fiscalliance.iam.domain.models.aggregates.MemberContribution;
+import com.fiscalliance.iam.domain.models.queries.GetAllMemberContributionsQuery;
+import com.fiscalliance.iam.domain.models.queries.GetMemberContributionByIdQuery;
+import com.fiscalliance.iam.domain.services.MemberContributionCommandService;
+import com.fiscalliance.iam.domain.services.MemberContributionQueryService;
+import com.fiscalliance.iam.interfaces.rest.resources.CreateMemberContributionResource;
+import com.fiscalliance.iam.interfaces.rest.resources.MemberContributionResource;
+import com.fiscalliance.iam.interfaces.rest.transform.CreateMemberContributionCommandFromResourceAssembler;
+import com.fiscalliance.iam.interfaces.rest.transform.MemberContributionResourceFromEntityAssembler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

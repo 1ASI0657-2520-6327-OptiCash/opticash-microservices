@@ -1,4 +1,4 @@
-package com.fiscalliance.membercontributions;
+package com.fiscalliance.iam;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

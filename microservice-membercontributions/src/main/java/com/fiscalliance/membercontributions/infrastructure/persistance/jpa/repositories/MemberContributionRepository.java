@@ -1,6 +1,6 @@
-package com.fiscalliance.membercontributions.infrastructure.persistance.jpa.repositories;
+package com.fiscalliance.iam.infrastructure.persistance.jpa.repositories;
 
-import com.fiscalliance.membercontributions.domain.models.aggregates.MemberContribution;
+import com.fiscalliance.iam.domain.models.aggregates.MemberContribution;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

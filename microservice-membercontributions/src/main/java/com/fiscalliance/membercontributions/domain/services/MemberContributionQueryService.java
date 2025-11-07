@@ -1,8 +1,8 @@
-package com.fiscalliance.membercontributions.domain.services;
+package com.fiscalliance.iam.domain.services;
 
-import com.fiscalliance.membercontributions.domain.models.aggregates.MemberContribution;
-import com.fiscalliance.membercontributions.domain.models.queries.GetAllMemberContributionsQuery;
-import com.fiscalliance.membercontributions.domain.models.queries.GetMemberContributionByIdQuery;
+import com.fiscalliance.iam.domain.models.aggregates.MemberContribution;
+import com.fiscalliance.iam.domain.models.queries.GetAllMemberContributionsQuery;
+import com.fiscalliance.iam.domain.models.queries.GetMemberContributionByIdQuery;
 
 import java.util.List;
 import java.util.Optional;

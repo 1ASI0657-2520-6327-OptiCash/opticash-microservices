@@ -1,4 +1,4 @@
-package com.fiscalliance.membercontributions.interfaces.rest.resources;
+package com.fiscalliance.iam.interfaces.rest.resources;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

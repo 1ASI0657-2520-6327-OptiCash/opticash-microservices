@@ -1,3 +1,3 @@
-package com.fiscalliance.membercontributions.domain.models.queries;
+package com.fiscalliance.iam.domain.models.queries;
 
 public record GetAllMemberContributionsQuery() {}

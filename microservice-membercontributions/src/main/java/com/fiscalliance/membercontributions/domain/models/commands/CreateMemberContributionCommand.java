@@ -1,6 +1,6 @@
-package com.fiscalliance.membercontributions.domain.models.commands;
+package com.fiscalliance.iam.domain.models.commands;
 
-import com.fiscalliance.membercontributions.domain.models.valueobjects.Status;
+import com.fiscalliance.iam.domain.models.valueobjects.Status;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

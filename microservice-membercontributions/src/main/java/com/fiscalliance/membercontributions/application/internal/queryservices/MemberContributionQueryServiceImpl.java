@@ -1,10 +1,10 @@
-package com.fiscalliance.membercontributions.application.internal.queryservices;
+package com.fiscalliance.iam.application.internal.queryservices;
 
-import com.fiscalliance.membercontributions.domain.models.aggregates.MemberContribution;
-import com.fiscalliance.membercontributions.domain.models.queries.GetAllMemberContributionsQuery;
-import com.fiscalliance.membercontributions.domain.models.queries.GetMemberContributionByIdQuery;
-import com.fiscalliance.membercontributions.domain.services.MemberContributionQueryService;
-import com.fiscalliance.membercontributions.infrastructure.persistance.jpa.repositories.MemberContributionRepository;
+import com.fiscalliance.iam.domain.models.aggregates.MemberContribution;
+import com.fiscalliance.iam.domain.models.queries.GetAllMemberContributionsQuery;
+import com.fiscalliance.iam.domain.models.queries.GetMemberContributionByIdQuery;
+import com.fiscalliance.iam.domain.services.MemberContributionQueryService;
+import com.fiscalliance.iam.infrastructure.persistance.jpa.repositories.MemberContributionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

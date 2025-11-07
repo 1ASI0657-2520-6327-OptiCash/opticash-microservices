@@ -1,7 +1,7 @@
-package com.fiscalliance.membercontributions.domain.services;
+package com.fiscalliance.iam.domain.services;
 
-import com.fiscalliance.membercontributions.domain.models.aggregates.MemberContribution;
-import com.fiscalliance.membercontributions.domain.models.commands.CreateMemberContributionCommand;
+import com.fiscalliance.iam.domain.models.aggregates.MemberContribution;
+import com.fiscalliance.iam.domain.models.commands.CreateMemberContributionCommand;
 
 import java.util.Optional;
 

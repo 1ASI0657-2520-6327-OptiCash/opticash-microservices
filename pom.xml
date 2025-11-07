@@ -19,7 +19,6 @@
   <modules>
     <module>microservice-gateway</module>
     <module>microservice-eureka</module>
-    <module>microservice-config</module>
     <module>microservice-iam</module>
     <module>microservice-bills</module>
     <module>microservice-contributions</module>
