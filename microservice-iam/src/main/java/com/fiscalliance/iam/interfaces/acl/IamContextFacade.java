@@ -1,0 +1,84 @@
+package com.fiscalliance.iam.interfaces.acl;
+
+import com.fiscalliance.iam.domain.model.commands.SignUpCommand;
+import com.fiscalliance.iam.domain.model.entities.Role;
+import com.fiscalliance.iam.domain.model.queries.GetUserByIdQuery;
+import com.fiscalliance.iam.domain.model.queries.GetUserByUsernameQuery;
+import com.fiscalliance.iam.domain.services.UserCommandService;
+import com.fiscalliance.iam.domain.services.UserQueryService;
+import org.apache.logging.log4j.util.Strings;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * IamContextFacade
+ * <p>
+ *     Esta clase era para monolitos, pero en microservicios puede ser util para pruebas de integracion o para otros
+ *     microservicios que necesiten interactuar con el microservicio IAM de forma programatica.
+ * </p>
+ *
+ */
+public class IamContextFacade {
+    private final UserCommandService userCommandService;
+    private final UserQueryService userQueryService;
+
+    public IamContextFacade(UserCommandService userCommandService, UserQueryService userQueryService) {
+        this.userCommandService = userCommandService;
+        this.userQueryService = userQueryService;
+    }
+
+    /**
+     * Creates a user with the given username and password.
+     * @param username The username of the user.
+     * @param password The password of the user.
+     * @return The id of the created user.
+     */
+    public Long createUser(String username, String email, String password, BigDecimal income) {
+        var signUpCommand = new SignUpCommand(username, email, password, income , List.of(Role.getDefaultRole()));
+        var result = userCommandService.handle(signUpCommand);
+        if (result.isEmpty()) return 0L;
+        return result.get().getId();
+    }
+
+    /**
+     * Creates a user with the given username, password and roles.
+     * @param username The username of the user.
+     * @param password The password of the user.
+     * @param roleNames The names of the roles of the user. When a role does not exist, it is ignored.
+     * @return The id of the created user.
+     */
+    public Long createUser(String username, String email, String password, BigDecimal income, List<String> roleNames) {
+        var roles = roleNames != null ? roleNames.stream().map(Role::toRoleFromName).toList() : new ArrayList<Role>();
+        var signUpCommand = new SignUpCommand(username, email, password, income,roles);
+        var result = userCommandService.handle(signUpCommand);
+        if (result.isEmpty()) return 0L;
+        return result.get().getId();
+    }
+
+    /**
+     * Fetches the id of the user with the given username.
+     * @param username The username of the user.
+     * @return The id of the user.
+     */
+    public Long fetchUserIdByUsername(String username) {
+        var getUserByUsernameQuery = new GetUserByUsernameQuery(username);
+        var result = userQueryService.handle(getUserByUsernameQuery);
+        if (result.isEmpty()) return 0L;
+        return result.get().getId();
+    }
+
+    /**
+     * Fetches the username of the user with the given id.
+     * @param userId The id of the user.
+     * @return The username of the user.
+     */
+    public String fetchUsernameByUserId(Long userId) {
+        var getUserByIdQuery = new GetUserByIdQuery(userId);
+        var result = userQueryService.handle(getUserByIdQuery);
+        if (result.isEmpty()) return Strings.EMPTY;
+        return result.get().getUsername();
+    }
+
+}
