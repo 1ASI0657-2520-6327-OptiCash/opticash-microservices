@@ -1,0 +1,57 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+
+      routes:
+        # Ruta pública (login y registro)
+        - id: iam-public
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/v1/authentication/**
+          filters:
+            - StripPrefix=0
+
+        # Rutas protegidas de IAM (usuarios, roles)
+        - id: iam-secure
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/v1/users/**,/api/v1/roles/**
+          filters:
+            - JwtAuthenticationFilter
+
+        # Rutas protegidas de Bills
+        - id: payment
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/v1/bills/**
+          filters:
+            - JwtAuthenticationFilter
+
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+jwt:
+  secret: "mysupersecretkeythatshouldbeatleast32chars"
+  expiration: 86400000 # 24h
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    com.fiscalliance.gateway.filters: DEBUG
