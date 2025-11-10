@@ -21,8 +21,8 @@
     <module>microservice-eureka</module>
     <module>microservice-iam</module>
     <module>microservice-bills</module>
-    <module>microservice-contributions</module>
     <module>microservice-households</module>
+    <module>microservice-contributions</module>
   </modules>
 
   <properties>

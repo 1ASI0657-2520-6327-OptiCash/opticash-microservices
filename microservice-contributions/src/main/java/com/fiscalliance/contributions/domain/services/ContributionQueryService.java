@@ -1,8 +1,8 @@
-package com.fiscalliance.contributions.domain.services;
+package com.example.spliteasybackend.contributions.domain.services;
 
-import com.fiscalliance.contributions.domain.models.aggregates.Contribution;
-import com.fiscalliance.contributions.domain.models.queries.GetAllContributionsQuery;
-import com.fiscalliance.contributions.domain.models.queries.GetContributionByIdQuery;
+import com.example.spliteasybackend.contributions.domain.models.aggregates.Contribution;
+import com.example.spliteasybackend.contributions.domain.models.queries.GetContributionByIdQuery;
+import com.example.spliteasybackend.contributions.domain.models.queries.GetAllContributionsQuery;
 
 import java.util.List;
 import java.util.Optional;

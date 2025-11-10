@@ -1,4 +1,4 @@
-package com.fiscalliance.contributions.domain.models.queries;
+// GetAllContributionsQuery.java
+package com.example.spliteasybackend.contributions.domain.models.queries;
 
-public record GetAllContributionsQuery() {
-}
+public record GetAllContributionsQuery() {}

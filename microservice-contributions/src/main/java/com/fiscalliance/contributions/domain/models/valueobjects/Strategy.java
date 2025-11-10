@@ -1,4 +1,4 @@
-package com.fiscalliance.contributions.domain.models.valueobjects;
+package com.example.spliteasybackend.contributions.domain.models.valueobjects;
 
 public enum Strategy {
     EQUAL,
