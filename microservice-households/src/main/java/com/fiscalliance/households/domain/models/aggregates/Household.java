@@ -8,6 +8,9 @@ import com.fiscalliance.shared.domain.model.aggregates.AuditableAbstractAggregat
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Getter
 public class Household extends AuditableAbstractAggregateRoot<Household> {
@@ -30,6 +33,9 @@ public class Household extends AuditableAbstractAggregateRoot<Household> {
         @AttributeOverride(name = "userId", column = @Column(name = "representante_user_id"))
     })
     private UserId representante;
+
+    @OneToMany(mappedBy = "household", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<HouseholdMember> members = new HashSet<>();
 
     protected Household() {}
 
@@ -64,5 +70,13 @@ public class Household extends AuditableAbstractAggregateRoot<Household> {
         }
         */
         this.representante = nuevoRepresentante;
+    }
+
+    public void addMember(HouseholdMember member) {
+        members.add(member);
+    }
+
+    public void removeMember(HouseholdMember member) {
+        members.remove(member);
     }
 }

@@ -39,6 +39,23 @@ spring:
           filters:
             - JwtAuthenticationFilter
 
+        # Rutas protegidas de Households
+        - id: households
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/v1/households/**
+          filters:
+            - JwtAuthenticationFilter
+
+        # Rutas protegidas de Household-members
+        - id: household-members
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/v1/household-members/**
+          filters:
+            - JwtAuthenticationFilter
+
+
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
 
