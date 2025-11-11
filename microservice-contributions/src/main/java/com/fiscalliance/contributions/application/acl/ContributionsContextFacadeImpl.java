@@ -1,11 +1,11 @@
-package com.example.spliteasybackend.contributions.application.acl;
+package com.fiscalliance.contributions.application.acl;
 
-import com.example.spliteasybackend.contributions.domain.models.commands.CreateContributionCommand;
-import com.example.spliteasybackend.contributions.domain.models.queries.GetContributionByIdQuery;
-import com.example.spliteasybackend.contributions.domain.models.valueobjects.Strategy;
-import com.example.spliteasybackend.contributions.domain.services.ContributionCommandService;
-import com.example.spliteasybackend.contributions.domain.services.ContributionQueryService;
-import com.example.spliteasybackend.contributions.interfaces.acl.ContributionsContextFacade;
+import com.fiscalliance.contributions.domain.models.commands.CreateContributionCommand;
+import com.fiscalliance.contributions.domain.models.queries.GetContributionByIdQuery;
+import com.fiscalliance.contributions.domain.models.valueobjects.Strategy;
+import com.fiscalliance.contributions.domain.services.ContributionCommandService;
+import com.fiscalliance.contributions.domain.services.ContributionQueryService;
+import com.fiscalliance.contributions.interfaces.acl.ContributionsContextFacade;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

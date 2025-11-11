@@ -1,6 +1,6 @@
-package com.example.spliteasybackend.contributions.domain.models.commands;
+package com.fiscalliance.contributions.domain.models.commands;
 
-import com.example.spliteasybackend.contributions.domain.models.valueobjects.Strategy;
+import com.fiscalliance.contributions.domain.models.valueobjects.Strategy;
 
 import java.time.LocalDate;
 

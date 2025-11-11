@@ -1,10 +1,10 @@
-package com.example.spliteasybackend.contributions.application.internal.queryservices;
+package com.fiscalliance.contributions.application.internal.queryservices;
 
-import com.example.spliteasybackend.contributions.domain.models.aggregates.Contribution;
-import com.example.spliteasybackend.contributions.domain.models.queries.GetAllContributionsQuery;
-import com.example.spliteasybackend.contributions.domain.models.queries.GetContributionByIdQuery;
-import com.example.spliteasybackend.contributions.domain.services.ContributionQueryService;
-import com.example.spliteasybackend.contributions.infrastructure.persistance.jpa.repositories.ContributionRepository;
+import com.fiscalliance.contributions.domain.models.aggregates.Contribution;
+import com.fiscalliance.contributions.domain.models.queries.GetAllContributionsQuery;
+import com.fiscalliance.contributions.domain.models.queries.GetContributionByIdQuery;
+import com.fiscalliance.contributions.domain.services.ContributionQueryService;
+import com.fiscalliance.contributions.infrastructure.persistance.jpa.repositories.ContributionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.spliteasybackend.contributions.interfaces.acl;
+package com.fiscalliance.contributions.interfaces.acl;
 
 import java.time.LocalDate;
 

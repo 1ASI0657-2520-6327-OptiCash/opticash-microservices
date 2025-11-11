@@ -1,16 +1,16 @@
-package com.example.spliteasybackend.contributions.application.internal.commandservices;
+package com.fiscalliance.contributions.application.internal.commandservices;
 
-import com.example.spliteasybackend.bills.domain.models.aggregates.Bill;
-import com.example.spliteasybackend.bills.infrastructure.persistance.jpa.repositories.BillRepository;
-import com.example.spliteasybackend.contributions.domain.models.aggregates.Contribution;
-import com.example.spliteasybackend.contributions.domain.models.commands.CreateContributionCommand;
-import com.example.spliteasybackend.contributions.domain.services.ContributionCommandService;
-import com.example.spliteasybackend.contributions.infrastructure.persistance.jpa.repositories.ContributionRepository;
-import com.example.spliteasybackend.householdmembers.infrastructure.persistance.jpa.repositories.HouseholdMemberRepository;
-import com.example.spliteasybackend.households.domain.models.aggregates.Household;
-import com.example.spliteasybackend.households.infrastructure.persistance.jpa.repositories.HouseholdRepository;
-import com.example.spliteasybackend.iam.infrastructure.persistence.jpa.repositories.UserRepository;
-import com.example.spliteasybackend.membercontributions.infrastructure.persistance.jpa.repositories.MemberContributionRepository;
+import com.fiscalliance.bills.domain.models.aggregates.Bill;
+import com.fiscalliance.bills.infrastructure.persistance.jpa.repositories.BillRepository;
+import com.fiscalliance.contributions.domain.models.aggregates.Contribution;
+import com.fiscalliance.contributions.domain.models.commands.CreateContributionCommand;
+import com.fiscalliance.contributions.domain.services.ContributionCommandService;
+import com.fiscalliance.contributions.infrastructure.persistance.jpa.repositories.ContributionRepository;
+import com.fiscalliance.householdmembers.infrastructure.persistance.jpa.repositories.HouseholdMemberRepository;
+import com.fiscalliance.households.domain.models.aggregates.Household;
+import com.fiscalliance.households.infrastructure.persistance.jpa.repositories.HouseholdRepository;
+import com.fiscalliance.iam.infrastructure.persistence.jpa.repositories.UserRepository;
+import com.fiscalliance.membercontributions.infrastructure.persistance.jpa.repositories.MemberContributionRepository;
 
 import org.springframework.stereotype.Service;
 

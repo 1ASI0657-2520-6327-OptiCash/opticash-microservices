@@ -1,7 +1,7 @@
-package com.example.spliteasybackend.contributions.interfaces.rest.transform;
+package com.fiscalliance.contributions.interfaces.rest.transform;
 
-import com.example.spliteasybackend.contributions.domain.models.aggregates.Contribution;
-import com.example.spliteasybackend.contributions.interfaces.rest.resources.ContributionResource;
+import com.fiscalliance.contributions.domain.models.aggregates.Contribution;
+import com.fiscalliance.contributions.interfaces.rest.resources.ContributionResource;
 
 public class ContributionResourceFromEntityAssembler {
 

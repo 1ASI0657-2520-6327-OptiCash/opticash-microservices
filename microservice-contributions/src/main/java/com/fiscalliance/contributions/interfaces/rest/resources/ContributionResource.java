@@ -1,4 +1,4 @@
-package com.example.spliteasybackend.contributions.interfaces.rest.resources;
+package com.fiscalliance.contributions.interfaces.rest.resources;
 
 import java.time.LocalDate;
 

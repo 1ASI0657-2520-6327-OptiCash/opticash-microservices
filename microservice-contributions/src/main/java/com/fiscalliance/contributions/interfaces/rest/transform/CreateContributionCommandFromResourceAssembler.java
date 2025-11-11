@@ -1,8 +1,8 @@
-package com.example.spliteasybackend.contributions.interfaces.rest.transform;
+package com.fiscalliance.contributions.interfaces.rest.transform;
 
-import com.example.spliteasybackend.contributions.domain.models.commands.CreateContributionCommand;
-import com.example.spliteasybackend.contributions.domain.models.valueobjects.Strategy;
-import com.example.spliteasybackend.contributions.interfaces.rest.resources.CreateContributionResource;
+import com.fiscalliance.contributions.domain.models.commands.CreateContributionCommand;
+import com.fiscalliance.contributions.domain.models.valueobjects.Strategy;
+import com.fiscalliance.contributions.interfaces.rest.resources.CreateContributionResource;
 
 public class CreateContributionCommandFromResourceAssembler {
 

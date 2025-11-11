@@ -2,6 +2,7 @@ package com.fiscalliance.households.application.internal.queryservices;
 
 import com.fiscalliance.households.domain.models.aggregates.HouseholdMember;
 import com.fiscalliance.households.domain.models.queries.GetAllHouseholdMembersQuery;
+import com.fiscalliance.households.domain.models.queries.GetAllMembersByHouseholdIdQuery;
 import com.fiscalliance.households.domain.models.queries.GetHouseholdMemberByIdQuery;
 import com.fiscalliance.households.domain.services.HouseholdMemberQueryService;
 import com.fiscalliance.households.infrastructure.persistance.jpa.repositories.HouseholdMemberRepository;
@@ -27,5 +28,10 @@ public class HouseholdMemberQueryServiceImpl implements HouseholdMemberQueryServ
     @Override
     public List<HouseholdMember> handle(GetAllHouseholdMembersQuery query) {
         return repository.findAll();
+    }
+
+    @Override
+    public List<HouseholdMember> handle(GetAllMembersByHouseholdIdQuery query) {
+        return repository.findAllByHouseholdId(query.HouseholdId());
     }
 }

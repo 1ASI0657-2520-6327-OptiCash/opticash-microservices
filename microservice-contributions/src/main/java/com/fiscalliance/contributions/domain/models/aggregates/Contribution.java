@@ -1,16 +1,12 @@
-package com.example.spliteasybackend.contributions.domain.models.aggregates;
+package com.fiscalliance.contributions.domain.models.aggregates;
 
-import com.example.spliteasybackend.bills.domain.models.aggregates.Bill;
-import com.example.spliteasybackend.contributions.domain.models.commands.CreateContributionCommand;
-import com.example.spliteasybackend.contributions.domain.models.valueobjects.Strategy;
-import com.example.spliteasybackend.householdmembers.domain.models.aggregates.HouseholdMember;
-import com.example.spliteasybackend.households.domain.models.aggregates.Household;
-import com.example.spliteasybackend.iam.infrastructure.persistence.jpa.repositories.UserRepository;
-import com.example.spliteasybackend.membercontributions.domain.models.aggregates.MemberContribution;
-import com.example.spliteasybackend.membercontributions.infrastructure.persistance.jpa.repositories.MemberContributionRepository;
-import com.example.spliteasybackend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
-import com.example.spliteasybackend.iam.domain.model.aggregates.User;
 
+
+import com.fiscalliance.contributions.domain.models.commands.CreateContributionCommand;
+import com.fiscalliance.contributions.domain.models.valueobjects.BillId;
+import com.fiscalliance.contributions.domain.models.valueobjects.HouseholdId;
+import com.fiscalliance.contributions.domain.models.valueobjects.Strategy;
+import com.fiscalliance.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +14,7 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.util.List;
+
 
 @Entity
 @Getter
@@ -29,13 +25,17 @@ public class Contribution extends AuditableAbstractAggregateRoot<Contribution> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "bill_id", nullable = false)
-    private Bill bill;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "billId", column = @Column(name = "bill_id", nullable = false))
+    })
+    private BillId billId;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "household_id", nullable = false)
-    private Household household;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "householdId", column = @Column(name = "household_id", nullable = false))
+    })
+    private HouseholdId householdId;
 
     @Column(nullable = false, length = 255)
     private String description;
@@ -51,19 +51,15 @@ public class Contribution extends AuditableAbstractAggregateRoot<Contribution> {
         // Requerido por JPA
     }
 
-    private Contribution(Bill bill, Household household, String description, LocalDate fechaLimite, Strategy strategy) {
-        this.bill = bill;
-        this.household = household;
+    private Contribution(BillId bill, HouseholdId household, String description, LocalDate fechaLimite, Strategy strategy) {
+        this.billId = bill;
+        this.householdId = household;
         this.description = description;
         this.fechaLimite = fechaLimite;
         this.strategy = strategy;
     }
 
-    public static Contribution create(CreateContributionCommand command, Bill bill, Household household) {
-        if (!bill.getHousehold().getId().equals(household.getId())) {
-            throw new IllegalArgumentException("El bill no pertenece al household indicado.");
-        }
-
+    public static Contribution create(CreateContributionCommand command, BillId bill, HouseholdId household) {
         return new Contribution(
                 bill,
                 household,
@@ -73,13 +69,10 @@ public class Contribution extends AuditableAbstractAggregateRoot<Contribution> {
         );
     }
 
-    public void update(CreateContributionCommand command, Bill bill, Household household) {
-        if (!bill.getHousehold().getId().equals(household.getId())) {
-            throw new IllegalArgumentException("El bill no pertenece al household indicado.");
-        }
+    public void update(CreateContributionCommand command, BillId bill, HouseholdId household) {
 
-        this.bill = bill;
-        this.household = household;
+        this.billId = bill;
+        this.householdId = household;
         this.description = command.description();
         this.fechaLimite = command.fechaLimite();
         this.strategy = command.strategy();

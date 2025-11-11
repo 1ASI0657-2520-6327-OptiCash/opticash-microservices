@@ -1,13 +1,13 @@
-package com.example.spliteasybackend.contributions.interfaces;
+package com.fiscalliance.contributions.interfaces;
 
-import com.example.spliteasybackend.contributions.domain.models.queries.GetAllContributionsQuery;
-import com.example.spliteasybackend.contributions.domain.models.queries.GetContributionByIdQuery;
-import com.example.spliteasybackend.contributions.domain.services.ContributionCommandService;
-import com.example.spliteasybackend.contributions.domain.services.ContributionQueryService;
-import com.example.spliteasybackend.contributions.interfaces.rest.resources.CreateContributionResource;
-import com.example.spliteasybackend.contributions.interfaces.rest.resources.ContributionResource;
-import com.example.spliteasybackend.contributions.interfaces.rest.transform.CreateContributionCommandFromResourceAssembler;
-import com.example.spliteasybackend.contributions.interfaces.rest.transform.ContributionResourceFromEntityAssembler;
+import com.fiscalliance.contributions.domain.models.queries.GetAllContributionsQuery;
+import com.fiscalliance.contributions.domain.models.queries.GetContributionByIdQuery;
+import com.fiscalliance.contributions.domain.services.ContributionCommandService;
+import com.fiscalliance.contributions.domain.services.ContributionQueryService;
+import com.fiscalliance.contributions.interfaces.rest.resources.CreateContributionResource;
+import com.fiscalliance.contributions.interfaces.rest.resources.ContributionResource;
+import com.fiscalliance.contributions.interfaces.rest.transform.CreateContributionCommandFromResourceAssembler;
+import com.fiscalliance.contributions.interfaces.rest.transform.ContributionResourceFromEntityAssembler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -15,7 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,7 +34,6 @@ public class ContributionsController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ROLE_REPRESENTANTE')")
     @Operation(summary = "Create a contribution")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Contribution created"),
@@ -81,7 +80,6 @@ public class ContributionsController {
     }
 
     @DeleteMapping("/{contributionId}")
-    @PreAuthorize("hasAuthority('ROLE_REPRESENTANTE')")
     @Operation(summary = "Delete contribution by ID")
     public ResponseEntity<Void> deleteContributionById(@PathVariable Long contributionId) {
         boolean deleted = commandService.delete(contributionId);

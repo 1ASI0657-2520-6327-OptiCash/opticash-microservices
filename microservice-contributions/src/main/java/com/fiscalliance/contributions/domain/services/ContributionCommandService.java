@@ -1,7 +1,7 @@
-package com.example.spliteasybackend.contributions.domain.services;
+package com.fiscalliance.contributions.domain.services;
 
-import com.example.spliteasybackend.contributions.domain.models.aggregates.Contribution;
-import com.example.spliteasybackend.contributions.domain.models.commands.CreateContributionCommand;
+import com.fiscalliance.contributions.domain.models.aggregates.Contribution;
+import com.fiscalliance.contributions.domain.models.commands.CreateContributionCommand;
 
 import java.util.Optional;
 

@@ -1,6 +1,7 @@
 package com.fiscalliance.households.interfaces.rest;
 
 import com.fiscalliance.households.domain.models.queries.GetAllHouseholdMembersQuery;
+import com.fiscalliance.households.domain.models.queries.GetAllMembersByHouseholdIdQuery;
 import com.fiscalliance.households.domain.models.queries.GetHouseholdMemberByIdQuery;
 import com.fiscalliance.households.domain.services.HouseholdMemberCommandService;
 import com.fiscalliance.households.domain.services.HouseholdMemberQueryService;
@@ -81,5 +82,15 @@ public class HouseholdMembersController {
     public ResponseEntity<Void> deleteHouseholdMemberById(@PathVariable Long memberId) {
         boolean deleted = commandService.delete(memberId);
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    }
+    @GetMapping("{householdId}/members")
+    @Operation(summary = "Health check endpoint")
+    public ResponseEntity<List<HouseholdMemberResource>> getMembersByHouseholdId(@PathVariable Long householdId) {
+        var result = queryService.handle(new GetAllMembersByHouseholdIdQuery(householdId));
+        if (result.isEmpty()) return ResponseEntity.notFound().build();
+        var resources = result.stream()
+                .map(HouseholdMemberResourceFromEntityAssembler::toResourceFromEntity)
+                .toList();
+        return ResponseEntity.ok(resources);
     }
 }
