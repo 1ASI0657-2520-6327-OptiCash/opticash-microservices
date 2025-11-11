@@ -1,95 +1,73 @@
 package com.fiscalliance.contributions.application.internal.commandservices;
 
-import com.fiscalliance.bills.domain.models.aggregates.Bill;
-import com.fiscalliance.bills.infrastructure.persistance.jpa.repositories.BillRepository;
 import com.fiscalliance.contributions.domain.models.aggregates.Contribution;
 import com.fiscalliance.contributions.domain.models.commands.CreateContributionCommand;
+import com.fiscalliance.contributions.domain.models.valueobjects.Member;
+import com.fiscalliance.contributions.domain.models.valueobjects.UserIncome;
 import com.fiscalliance.contributions.domain.services.ContributionCommandService;
 import com.fiscalliance.contributions.infrastructure.persistance.jpa.repositories.ContributionRepository;
-import com.fiscalliance.householdmembers.infrastructure.persistance.jpa.repositories.HouseholdMemberRepository;
-import com.fiscalliance.households.domain.models.aggregates.Household;
-import com.fiscalliance.households.infrastructure.persistance.jpa.repositories.HouseholdRepository;
-import com.fiscalliance.iam.infrastructure.persistence.jpa.repositories.UserRepository;
-import com.fiscalliance.membercontributions.infrastructure.persistance.jpa.repositories.MemberContributionRepository;
-
+import com.fiscalliance.contributions.infrastructure.persistance.jpa.repositories.MemberContributionRepository;
+import com.fiscalliance.contributions.infrastructure.rest.BillClient;
+import com.fiscalliance.contributions.infrastructure.rest.HouseholdClient;
+import com.fiscalliance.contributions.infrastructure.rest.IamClient;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
 public class ContributionCommandServiceImpl implements ContributionCommandService {
-
     private final ContributionRepository contributionRepository;
-    private final BillRepository billRepository;
-    private final HouseholdRepository householdRepository;
-    private final HouseholdMemberRepository memberRepository;
-    private final UserRepository userRepository;
     private final MemberContributionRepository memberContributionRepository;
+    private final HouseholdClient householdClient;
+    private final BillClient billClient;
+    private final IamClient iamClient;
 
     public ContributionCommandServiceImpl(
             ContributionRepository contributionRepository,
-            BillRepository billRepository,
-            HouseholdRepository householdRepository,
-            HouseholdMemberRepository memberRepository,
-            UserRepository userRepository,
-            MemberContributionRepository memberContributionRepository) {
+            MemberContributionRepository memberContributionRepository,
+            HouseholdClient householdClient,
+            BillClient billClient,
+            IamClient iamClient) {
         this.contributionRepository = contributionRepository;
-        this.billRepository = billRepository;
-        this.householdRepository = householdRepository;
-        this.memberRepository = memberRepository;
-        this.userRepository = userRepository;
         this.memberContributionRepository = memberContributionRepository;
+        this.householdClient = householdClient;
+        this.billClient = billClient;
+        this.iamClient = iamClient;
     }
 
     @Override
     public Optional<Contribution> handle(CreateContributionCommand command) {
-        // Obtener bill y household por ID
-        Bill bill = billRepository.findById(command.billId())
-                .orElseThrow(() -> new IllegalArgumentException("Bill no encontrado"));
+        var contribution = Contribution.create(command);
+        contribution = contributionRepository.save(contribution); // asignar para asegurar id si es necesario
 
-        Household household = householdRepository.findById(command.householdId())
-                .orElseThrow(() -> new IllegalArgumentException("Household no encontrado"));
+        // 1️⃣ Obtener miembros del hogar (responses)
+        var membersResponse = householdClient.getMembersByHousehold(command.householdId());
 
-        // Crear contribution con lógica de negocio
-        Contribution contribution = Contribution.create(command, bill, household);
+        // Mapear a value objects de dominio
+        var domainMembers = membersResponse.stream()
+                .map(m -> new Member(m.userId(), m.householdId()))
+                .toList();
 
-        // Guardar contribution
-        contributionRepository.save(contribution);
+        // 2️⃣ Obtener el monto total de la factura
+        var totalAmount = billClient.getBillAmount(command.billId());
 
-        // Distribuir los montos entre miembros
-        var members = memberRepository.findAllByHousehold_Id(household.getId());
-        contribution.distribute(members, userRepository, memberContributionRepository);
+        // 3️⃣ Obtener los ingresos de los usuarios (responses)
+        var userIds = membersResponse.stream()
+                .map(m -> m.userId())
+                .toList();
+        var userIncomesResponse = iamClient.getUsersIncome(userIds);
 
-        return Optional.of(contribution);
-    }
+        // Mapear a value objects de dominio
+        var domainUserIncomes = userIncomesResponse.stream()
+                .map(u -> new UserIncome(u.userId(), u.income()))
+                .toList();
 
-    @Override
-    public Optional<Contribution> update(Long id, CreateContributionCommand command) {
-        var contributionOpt = contributionRepository.findById(id);
-        if (contributionOpt.isEmpty()) return Optional.empty();
+        // 4️⃣ Lógica de distribución usando los value objects del dominio
+        var distributedContributions = contribution.distribute(totalAmount, domainMembers, domainUserIncomes);
 
-        var contribution = contributionOpt.get();
-
-        Bill bill = billRepository.findById(command.billId())
-                .orElseThrow(() -> new IllegalArgumentException("Bill no encontrado"));
-
-        Household household = householdRepository.findById(command.householdId())
-                .orElseThrow(() -> new IllegalArgumentException("Household no encontrado"));
-
-        contribution.update(command, bill, household);
-        contributionRepository.save(contribution);
-
-        // ❗ Si decides redistribuir en update también:
-        var members = memberRepository.findAllByHousehold_Id(household.getId());
-        contribution.distribute(members, userRepository, memberContributionRepository);
+        // 5️⃣ Guardar las contribuciones de miembros
+        memberContributionRepository.saveAll(distributedContributions);
 
         return Optional.of(contribution);
-    }
-
-    @Override
-    public boolean delete(Long id) {
-        if (!contributionRepository.existsById(id)) return false;
-        contributionRepository.deleteById(id);
-        return true;
     }
 }

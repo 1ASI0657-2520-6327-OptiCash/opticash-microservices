@@ -1,12 +1,12 @@
 package com.fiscalliance.contributions.domain.models.aggregates;
 
-
-
 import com.fiscalliance.contributions.domain.models.commands.CreateContributionCommand;
 import com.fiscalliance.contributions.domain.models.valueobjects.BillId;
 import com.fiscalliance.contributions.domain.models.valueobjects.HouseholdId;
+import com.fiscalliance.contributions.domain.models.valueobjects.Member;
 import com.fiscalliance.contributions.domain.models.valueobjects.Strategy;
 import com.fiscalliance.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
+import com.fiscalliance.contributions.domain.models.valueobjects.UserIncome;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +14,7 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Entity
@@ -59,10 +60,10 @@ public class Contribution extends AuditableAbstractAggregateRoot<Contribution> {
         this.strategy = strategy;
     }
 
-    public static Contribution create(CreateContributionCommand command, BillId bill, HouseholdId household) {
+    public static Contribution create(CreateContributionCommand command) {
         return new Contribution(
-                bill,
-                household,
+                new BillId(command.billId()),
+                new HouseholdId(command.householdId()),
                 command.description(),
                 command.fechaLimite(),
                 command.strategy()
@@ -78,54 +79,36 @@ public class Contribution extends AuditableAbstractAggregateRoot<Contribution> {
         this.strategy = command.strategy();
     }
 
-    public void distribute(
-            List<HouseholdMember> members,
-            UserRepository userRepository,
-            MemberContributionRepository memberContributionRepository) {
+    public List<MemberContribution> distribute(BigDecimal totalAmount, List<Member> members, List<UserIncome> userIncomes) {
+        if (strategy.equals(Strategy.INCOME_BASED)){
+            // Calcular la suma total de ingresos
+            var totalIncome = userIncomes.stream()
+                    .map(UserIncome::income)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        if (members == null || members.isEmpty()) {
-            throw new IllegalArgumentException("No hay miembros en el hogar.");
+            return members.stream()
+                    .map(member -> {
+                        var userIncome = userIncomes.stream()
+                                .filter(u -> u.userId().equals(member.userId()))
+                                .map(UserIncome::income)
+                                .findFirst()
+                                .orElse(BigDecimal.ZERO);
+
+                        var ratio = userIncome.divide(totalIncome, 2, RoundingMode.HALF_UP);
+                        var memberAmount = totalAmount.multiply(ratio);
+                        return new MemberContribution(member.userId(), member.householdId(), memberAmount);
+                    })
+                    .toList();
+        }
+        // 🔸 Otra estrategia: EQUAL (dividir en partes iguales)
+        if (strategy.equals(Strategy.EQUAL)) {
+            var perMember = totalAmount.divide(BigDecimal.valueOf(members.size()), 2, RoundingMode.HALF_UP);
+            return members.stream()
+                    .map(member -> new MemberContribution(member.userId(), member.householdId(), perMember))
+                    .toList();
         }
 
-        var totalAmount = this.bill.getMonto().value();
-
-        switch (this.strategy) {
-            case EQUAL -> {
-                BigDecimal equalAmount = totalAmount
-                        .divide(BigDecimal.valueOf(members.size()), 2, RoundingMode.HALF_UP);
-                for (var member : members) {
-                    var user = userRepository.findById(member.getUser().getId())
-                            .orElseThrow(() -> new IllegalStateException("Usuario no encontrado"));
-                    memberContributionRepository.save(new MemberContribution(this, user, equalAmount));
-                }
-            }
-
-            case INCOME_BASED -> {
-                BigDecimal totalIncome = members.stream()
-                        .map(member -> userRepository.findById(member.getUser().getId())
-                                .orElseThrow(() -> new IllegalStateException("Usuario no encontrado"))
-                                .getIncome())
-                        .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-                if (totalIncome.compareTo(BigDecimal.ZERO) == 0) {
-                    throw new IllegalStateException("La suma total de ingresos es cero. No se puede distribuir.");
-                }
-
-                for (var member : members) {
-                    User user = userRepository.findById(member.getUser().getId())
-                            .orElseThrow(() -> new IllegalStateException("Usuario no encontrado"));
-
-                    BigDecimal porcentaje = user.getIncome()
-                            .divide(totalIncome, 5, RoundingMode.HALF_UP);
-                    BigDecimal montoAsignado = totalAmount.multiply(porcentaje)
-                            .setScale(2, RoundingMode.HALF_UP);
-
-                    memberContributionRepository.save(new MemberContribution(this, user, montoAsignado));
-                }
-            }
-
-            default -> throw new UnsupportedOperationException("Estrategia no soportada: " + this.strategy);
-        }
+        // Otro tipo de distribución...
+        return List.of();
     }
-
 }

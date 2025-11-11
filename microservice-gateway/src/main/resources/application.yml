@@ -54,7 +54,13 @@ spring:
             - Path=/api/v1/household-members/**
           filters:
             - JwtAuthenticationFilter
-
+        #Rutas protegidas de Contributions
+        - id: contributions
+          uri: http://localhost:8084
+          predicates:
+            - Path=/api/v1/contributions/**,/api/v1/member-contributions/**
+          filters:
+            - JwtAuthenticationFilter
 
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials

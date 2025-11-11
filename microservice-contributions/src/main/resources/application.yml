@@ -15,6 +15,14 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
+services:
+  households:
+    url: http://localhost:8083
+  bills:
+    url: http://localhost:8082
+  iam:
+    url: http://localhost:8081
+
 eureka:
   instance:
     hostname: localhost
@@ -28,3 +36,8 @@ documentation:
   application:
     description: "Microservicio de Contributions"
     version: "1.0.0"
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web.client.RestTemplate: DEBUG

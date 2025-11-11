@@ -68,21 +68,5 @@ public class ContributionsController {
         return ResponseEntity.ok(resource);
     }
 
-    @PutMapping("/{contributionId}")
-    @Operation(summary = "Update contribution by ID")
-    public ResponseEntity<ContributionResource> updateContributionById(@PathVariable Long contributionId,
-                                                                       @RequestBody CreateContributionResource resource) {
-        var command = CreateContributionCommandFromResourceAssembler.toCommandFromResource(resource);
-        var updated = commandService.update(contributionId, command);
-        if (updated.isEmpty()) return ResponseEntity.notFound().build();
-        var updatedResource = ContributionResourceFromEntityAssembler.toResourceFromEntity(updated.get());
-        return ResponseEntity.ok(updatedResource);
-    }
 
-    @DeleteMapping("/{contributionId}")
-    @Operation(summary = "Delete contribution by ID")
-    public ResponseEntity<Void> deleteContributionById(@PathVariable Long contributionId) {
-        boolean deleted = commandService.delete(contributionId);
-        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
-    }
 }

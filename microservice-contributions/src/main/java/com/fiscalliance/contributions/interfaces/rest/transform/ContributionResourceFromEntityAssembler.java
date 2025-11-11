@@ -8,10 +8,10 @@ public class ContributionResourceFromEntityAssembler {
     public static ContributionResource toResourceFromEntity(Contribution entity) {
         return new ContributionResource(
                 entity.getId(),
-                entity.getBill() != null ? entity.getBill().getId() : null,
-                entity.getHousehold() != null ? entity.getHousehold().getId() : null,
+                entity.getBillId().billId(),
+                entity.getHouseholdId().householdId(),
                 entity.getDescription(),
-                entity.getStrategy().name(),       // Enum a String
+                entity.getStrategy().name(),
                 entity.getFechaLimite()
         );
     }
