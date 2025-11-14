@@ -17,11 +17,20 @@ spring:
 
 services:
   households:
-    url: http://localhost:8083
+    #Conectador por eureka
+    url: http://msvc-households
+    #Conerctado por el puerto directo
+    #url: http://localhost:8083
   bills:
-    url: http://localhost:8082
+    #Conectador por eureka
+    url: http://msvc-bills
+    #Conerctado por el puerto directo
+    #url: http://localhost:8082
   iam:
-    url: http://localhost:8081
+    #Conectador por eureka
+    url: http://msvc-iam
+    #Conerctado por el puerto directo
+    #url: http://localhost:8081
 
 eureka:
   instance:
