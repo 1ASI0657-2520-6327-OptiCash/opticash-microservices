@@ -96,7 +96,7 @@ public class Contribution extends AuditableAbstractAggregateRoot<Contribution> {
 
                         var ratio = userIncome.divide(totalIncome, 2, RoundingMode.HALF_UP);
                         var memberAmount = totalAmount.multiply(ratio);
-                        return new MemberContribution(member.userId(), member.householdId(), memberAmount);
+                        return new MemberContribution(this, member.userId(), memberAmount);
                     })
                     .toList();
         }
@@ -104,7 +104,7 @@ public class Contribution extends AuditableAbstractAggregateRoot<Contribution> {
         if (strategy.equals(Strategy.EQUAL)) {
             var perMember = totalAmount.divide(BigDecimal.valueOf(members.size()), 2, RoundingMode.HALF_UP);
             return members.stream()
-                    .map(member -> new MemberContribution(member.userId(), member.householdId(), perMember))
+                    .map(member -> new MemberContribution(this, member.userId(), perMember))
                     .toList();
         }
 

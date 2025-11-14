@@ -9,4 +9,6 @@ import java.util.Optional;
 
 public interface ContributionCommandService {
     Optional<Contribution> handle(CreateContributionCommand command);
+    Optional<Contribution> update(Long id,CreateContributionCommand command);
+    boolean delete(Long id);
 }

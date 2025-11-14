@@ -9,7 +9,7 @@ public class MemberContributionResourceFromEntityAssembler {
     public static MemberContributionResource toResourceFromEntity(MemberContribution entity) {
         return new MemberContributionResource(
                 entity.getId(),
-                entity.getContributionId(),
+                entity.getContribution().getId(),
                 entity.getMemberId(),
                 entity.getMonto(),
                 entity.getStatus().name(),       // Convertir enum a String

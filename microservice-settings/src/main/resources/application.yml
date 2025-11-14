@@ -1,9 +1,9 @@
 server:
-  port: 8084
+  port: 8085
 
 spring:
   application:
-    name: msvc-contributions
+    name: msvc-settings
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/opticash-iam-db
@@ -14,14 +14,6 @@ spring:
       ddl-auto: update
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-
-services:
-  households:
-    url: http://localhost:8083
-  bills:
-    url: http://localhost:8082
-  iam:
-    url: http://localhost:8081
 
 eureka:
   instance:
@@ -34,10 +26,5 @@ eureka:
 
 documentation:
   application:
-    description: "Microservicio de Contributions"
+    description: "Microservicio de Settings"
     version: "1.0.0"
-
-logging:
-  level:
-    root: INFO
-    org.springframework.web.client.RestTemplate: DEBUG

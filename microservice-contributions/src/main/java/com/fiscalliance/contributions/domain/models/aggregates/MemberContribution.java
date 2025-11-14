@@ -17,8 +17,9 @@ public class MemberContribution extends AuditableAbstractAggregateRoot<MemberCon
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-   @Column(name = "contribution_id", nullable = false)
-    private Long contributionId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "contribution_id", nullable = false)
+    private Contribution contribution;
 
    @Column(name = "member_id", nullable = false)
     private Long memberId;
@@ -32,8 +33,8 @@ public class MemberContribution extends AuditableAbstractAggregateRoot<MemberCon
 
     protected MemberContribution() {}
 
-    public MemberContribution(Long contributionId, Long memberId, BigDecimal monto) {
-        this.contributionId = contributionId;
+    public MemberContribution(Contribution contribution, Long memberId, BigDecimal monto) {
+        this.contribution = contribution;
         this.memberId = memberId;
         this.monto = monto;
         this.status = Status.PENDIENTE;

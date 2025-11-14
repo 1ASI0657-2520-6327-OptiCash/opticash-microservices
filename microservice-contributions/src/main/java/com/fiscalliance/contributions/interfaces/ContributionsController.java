@@ -68,5 +68,35 @@ public class ContributionsController {
         return ResponseEntity.ok(resource);
     }
 
+    //acatualizar
+    @PutMapping("/{contributionId}")
+    @Operation(summary = "Update a contribution")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Contribution updated"),
+            @ApiResponse(responseCode = "400", description = "Bad request"),
+            @ApiResponse(responseCode = "404", description = "Contribution not found")
+    })
+    public ResponseEntity<ContributionResource> updateContribution(
+            @PathVariable Long contributionId,
+            @RequestBody CreateContributionResource resource) {
+        var command = CreateContributionCommandFromResourceAssembler.toCommandFromResource(resource);
+        var updated = commandService.update(contributionId, command);
+        if (updated.isEmpty()) return ResponseEntity.notFound().build();
+        var response = ContributionResourceFromEntityAssembler.toResourceFromEntity(updated.get());
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{contributionId}")
+    @Operation(summary = "Delete a contribution")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Contribution deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Contribution not found")
+    })
+    public ResponseEntity<Void> deleteContribution(@PathVariable Long contributionId) {
+        boolean deleted = commandService.delete(contributionId);
+        if (!deleted) return ResponseEntity.notFound().build();
+        return ResponseEntity.noContent().build();
+    }
+
 
 }

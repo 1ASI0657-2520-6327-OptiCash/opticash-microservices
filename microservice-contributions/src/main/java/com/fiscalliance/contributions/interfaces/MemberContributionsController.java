@@ -3,6 +3,7 @@ package com.fiscalliance.contributions.interfaces;
 
 import com.fiscalliance.contributions.domain.models.queries.GetAllMemberContributionsQuery;
 import com.fiscalliance.contributions.domain.models.queries.GetMemberContributionByIdQuery;
+import com.fiscalliance.contributions.domain.services.MemberContributionCommandService;
 import com.fiscalliance.contributions.domain.services.MemberContributionQueryService;
 import com.fiscalliance.contributions.interfaces.rest.resources.MemberContributionResource;
 import com.fiscalliance.contributions.interfaces.rest.transform.MemberContributionResourceFromEntityAssembler;
@@ -21,8 +22,10 @@ import java.util.List;
 public class MemberContributionsController {
 
     private final MemberContributionQueryService queryService;
+    private final MemberContributionCommandService commandService;
 
-    public MemberContributionsController(MemberContributionQueryService queryService) {
+    public MemberContributionsController(MemberContributionQueryService queryService,MemberContributionCommandService commandService) {
+        this.commandService = commandService;
         this.queryService = queryService;
     }
 
@@ -42,6 +45,15 @@ public class MemberContributionsController {
     public ResponseEntity<MemberContributionResource> getById(@PathVariable Long id) {
         var query = new GetMemberContributionByIdQuery(id);
         var result = queryService.handle(query);
+        if (result.isEmpty()) return ResponseEntity.notFound().build();
+        var resource = MemberContributionResourceFromEntityAssembler.toResourceFromEntity(result.get());
+        return ResponseEntity.ok(resource);
+    }
+
+    @PutMapping("/{id}/pay")
+    @Operation(summary = "Mark a member contribution as paid")
+    public ResponseEntity<MemberContributionResource> markAsPaid(@PathVariable Long id) {
+        var result = commandService.handlMarkAsPaid(id);
         if (result.isEmpty()) return ResponseEntity.notFound().build();
         var resource = MemberContributionResourceFromEntityAssembler.toResourceFromEntity(result.get());
         return ResponseEntity.ok(resource);

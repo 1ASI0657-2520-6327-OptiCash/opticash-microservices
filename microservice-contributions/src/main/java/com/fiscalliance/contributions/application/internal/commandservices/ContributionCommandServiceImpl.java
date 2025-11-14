@@ -2,6 +2,8 @@ package com.fiscalliance.contributions.application.internal.commandservices;
 
 import com.fiscalliance.contributions.domain.models.aggregates.Contribution;
 import com.fiscalliance.contributions.domain.models.commands.CreateContributionCommand;
+import com.fiscalliance.contributions.domain.models.valueobjects.BillId;
+import com.fiscalliance.contributions.domain.models.valueobjects.HouseholdId;
 import com.fiscalliance.contributions.domain.models.valueobjects.Member;
 import com.fiscalliance.contributions.domain.models.valueobjects.UserIncome;
 import com.fiscalliance.contributions.domain.services.ContributionCommandService;
@@ -69,5 +71,28 @@ public class ContributionCommandServiceImpl implements ContributionCommandServic
         memberContributionRepository.saveAll(distributedContributions);
 
         return Optional.of(contribution);
+    }
+
+    @Override
+    public Optional<Contribution> update(Long id, CreateContributionCommand command) {
+        var optional = contributionRepository.findById(id);
+        if (optional.isEmpty()) return Optional.empty();
+
+        var existing = optional.get();
+        existing.update(
+                command,
+                new BillId(command.billId()),
+                new HouseholdId(command.householdId())
+        );
+
+        contributionRepository.save(existing);
+        return Optional.of(existing);
+    }
+
+    @Override
+    public boolean delete(Long id) {
+        if (!contributionRepository.existsById(id)) return false;
+        contributionRepository.deleteById(id);
+        return true;
     }
 }

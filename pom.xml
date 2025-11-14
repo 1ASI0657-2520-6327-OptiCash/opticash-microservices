@@ -23,6 +23,7 @@
     <module>microservice-bills</module>
     <module>microservice-households</module>
     <module>microservice-contributions</module>
+    <module>microservice-settings</module>
   </modules>
 
   <properties>
