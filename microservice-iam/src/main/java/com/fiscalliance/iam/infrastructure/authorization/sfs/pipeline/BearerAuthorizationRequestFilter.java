@@ -18,17 +18,11 @@ import java.io.IOException;
 
 /**
  * Bearer Authorization Request Filter.
- * <p>
- * This class is responsible for filtering requests and setting the user authentication.
- * It extends the OncePerRequestFilter class.
- * </p>
- * @see OncePerRequestFilter
  */
 public class BearerAuthorizationRequestFilter extends OncePerRequestFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BearerAuthorizationRequestFilter.class);
     private final BearerTokenService tokenService;
-
 
     @Qualifier("defaultUserDetailsService")
     private final UserDetailsService userDetailsService;
@@ -39,37 +33,39 @@ public class BearerAuthorizationRequestFilter extends OncePerRequestFilter {
     }
 
     /**
-     * This method is responsible for filtering requests and setting the user authentication.
-     * @param request The request object.
-     * @param response The response object.
-     * @param filterChain The filter chain object.
+     * Filtra solicitudes y establece la autenticación del usuario.
      */
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-        // 1. Excluir rutas públicas
+
         String path = request.getRequestURI();
-        if (path.startsWith("/api/v1/authentication") || path.startsWith("/v3/api-docs") || path.startsWith("/swagger-ui") || path.startsWith("/swagger-resources") || path.startsWith("/webjars")) {
+
+        // ✅ 1. Saltar rutas públicas
+        if (path.startsWith("/api/v1/authentication/sign-in") || path.startsWith("/api/v1/authentication/sign-up")
+                || path.startsWith("/v3/api-docs") || path.startsWith("/swagger-ui") 
+                || path.startsWith("/swagger-resources") || path.startsWith("/webjars")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // 2. Token validation
+        // 2. Validación de token para rutas protegidas
         try {
             String token = tokenService.getBearerTokenFrom(request);
             LOGGER.info("Token: {}", token);
             if (token != null && tokenService.validateToken(token)) {
                 String username = tokenService.getUsernameFromToken(token);
                 var userDetails = userDetailsService.loadUserByUsername(username);
-                SecurityContextHolder.getContext().setAuthentication(UsernamePasswordAuthenticationTokenBuilder.build(userDetails, request));
+                SecurityContextHolder.getContext().setAuthentication(
+                        UsernamePasswordAuthenticationTokenBuilder.build(userDetails, request)
+                );
             } else {
                 LOGGER.info("Token is not valid");
             }
-
         } catch (Exception e) {
             LOGGER.error("Cannot set user authentication: {}", e.getMessage());
         }
 
-        // 3. Continue filter chain
+        // 3. Continuar con el filtro
         filterChain.doFilter(request, response);
     }
 }

@@ -21,7 +21,7 @@ spring:
           predicates:
             - Path=/api/v1/authentication/**
           filters:
-            - StripPrefix=0
+            - StripPrefix=1
 
         # Rutas protegidas de IAM (usuarios, roles)
         - id: iam-secure
