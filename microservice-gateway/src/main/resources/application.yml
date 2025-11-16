@@ -7,68 +7,66 @@ spring:
 
   cloud:
     gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
       globalcors:
         corsConfigurations:
           '[/**]':
             allowedOrigins:
               - "http://localhost:4200"
               - "http://localhost:5173"
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS
+            allowedMethods: "*"
             allowedHeaders: "*"
             allowCredentials: true
 
       routes:
-        # Ruta pública (login y registro)
+
+        # IAM public paths
         - id: iam-public
-          uri: http://localhost:8081
+          uri: lb://msvc-iam
           predicates:
             - Path=/api/v1/authentication/**
           filters:
             - StripPrefix=1
 
-        # Rutas protegidas de IAM (usuarios, roles)
+        # IAM secure
         - id: iam-secure
-          uri: http://localhost:8081
+          uri: lb://msvc-iam
           predicates:
             - Path=/api/v1/users/**,/api/v1/roles/**
           filters:
             - JwtAuthenticationFilter
 
-        # Rutas protegidas de Bills
-        - id: payment
-          uri: http://localhost:8082
+        # Bills
+        - id: bills
+          uri: lb://msvc-bills
           predicates:
             - Path=/api/v1/bills/**
           filters:
             - JwtAuthenticationFilter
 
-        # Rutas protegidas de Households
+        # Households
         - id: households
-          uri: http://localhost:8083
+          uri: lb://msvc-households
           predicates:
             - Path=/api/v1/households/**
           filters:
             - JwtAuthenticationFilter
 
-        # Rutas protegidas de Household-members
+        # Household Members
         - id: household-members
-          uri: http://localhost:8083
+          uri: lb://msvc-households
           predicates:
             - Path=/api/v1/household-members/**
           filters:
-          - name: JwtAuthenticationFilter
-            args:
-              skipOptions: true
+            - JwtAuthenticationFilter
 
-
-        # Rutas protegidas de Contributions
+        # Contributions
         - id: contributions
-          uri: http://localhost:8084
+          uri: lb://msvc-contributions
           predicates:
             - Path=/api/v1/contributions/**,/api/v1/member-contributions/**
           filters:
@@ -77,14 +75,9 @@ spring:
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
 
-eureka:
-  client:
-    register-with-eureka: false
-    fetch-registry: false
-
 jwt:
   secret: "mysupersecretkeythatshouldbeatleast32chars"
-  expiration: 86400000 # 24h
+  expiration: 86400000
 
 logging:
   level:

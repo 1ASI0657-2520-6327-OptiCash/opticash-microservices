@@ -6,9 +6,9 @@ spring:
     name: msvc-settings
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/opticash-iam-db
-    username: postgres
-    password: ruben123
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -17,12 +17,12 @@ spring:
 
 eureka:
   instance:
-    hostname: localhost
+    hostname: msvc-settings
   client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
     register-with-eureka: true
     fetch-registry: true
+    service-url:
+      defaultZone: ${EUREKA_URI}
 
 documentation:
   application:
