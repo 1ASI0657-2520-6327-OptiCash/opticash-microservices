@@ -19,7 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
 @RestController
 @RequestMapping(value = "/api/v1/household-members", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Household Members", description = "Available Household Member Endpoints")
@@ -34,15 +34,19 @@ public class HouseholdMembersController {
         this.queryService = queryService;
     }
 
-    @PostMapping
-    @Operation(summary = "Create a household member")
-    public ResponseEntity<HouseholdMemberResource> createHouseholdMember(@RequestBody CreateHouseholdMemberResource resource) {
-        var command = CreateHouseholdMemberCommandFromResourceAssembler.toCommandFromResource(resource);
-        var result = commandService.handle(command);
-        if (result.isEmpty()) return ResponseEntity.badRequest().build();
-        var response = HouseholdMemberResourceFromEntityAssembler.toResourceFromEntity(result.get());
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+ @PostMapping
+@Operation(summary = "Create a household member")
+public ResponseEntity<HouseholdMemberResource> createHouseholdMember(@RequestBody CreateHouseholdMemberResource resource) {
+    var command = CreateHouseholdMemberCommandFromResourceAssembler.toCommandFromResource(resource);
+    var result = commandService.handle(command);
+    if (result.isEmpty()) {
+        System.out.println("❌ HouseholdMember not created. Resource: " + resource);
+        return ResponseEntity.badRequest().build();
     }
+    var response = HouseholdMemberResourceFromEntityAssembler.toResourceFromEntity(result.get());
+    return new ResponseEntity<>(response, HttpStatus.CREATED);
+}
+
 
     @GetMapping
     @Operation(summary = "Get all household members")

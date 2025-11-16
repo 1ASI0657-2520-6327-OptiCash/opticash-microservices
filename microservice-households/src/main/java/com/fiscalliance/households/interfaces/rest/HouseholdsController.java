@@ -22,6 +22,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1/households", produces = MediaType.APPLICATION_JSON_VALUE)
+@CrossOrigin(
+    origins = {"http://localhost:4200", "http://localhost:5173"},
+    allowedHeaders = "*",
+    methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS},
+    allowCredentials = "true"
+)
 @Tag(name = "Households", description = "Available Household Endpoints")
 public class HouseholdsController {
 

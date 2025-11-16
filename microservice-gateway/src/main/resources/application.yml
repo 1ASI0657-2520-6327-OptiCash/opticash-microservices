@@ -10,9 +10,17 @@ spring:
       globalcors:
         corsConfigurations:
           '[/**]':
-            allowedOrigins: "*"
-            allowedMethods: "*"
+            allowedOrigins:
+              - "http://localhost:4200"
+              - "http://localhost:5173"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
             allowedHeaders: "*"
+            allowCredentials: true
 
       routes:
         # Ruta pública (login y registro)
@@ -53,8 +61,12 @@ spring:
           predicates:
             - Path=/api/v1/household-members/**
           filters:
-            - JwtAuthenticationFilter
-        #Rutas protegidas de Contributions
+          - name: JwtAuthenticationFilter
+            args:
+              skipOptions: true
+
+
+        # Rutas protegidas de Contributions
         - id: contributions
           uri: http://localhost:8084
           predicates:
