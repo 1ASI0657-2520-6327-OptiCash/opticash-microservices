@@ -1,6 +1,119 @@
-    msvc-iam:
-        environment:
-            SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/opticash-iam-db
-            SPRING_DATASOURCE_USERNAME: postgres
-            SPRING_DATASOURCE_PASSWORD: ruben123
-            EUREKA_URI: http://eureka-server:8761/eureka
+version: '3.9'
+
+services:
+
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      POSTGRES_DB: opticash-iam-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ruben123
+    ports:
+      - "5432:5432"
+    networks:
+      - opticash-net
+
+  eureka-server:
+    build: ./msvc-eureka
+    image: msvc-eureka
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    environment:
+      # optional if you use it in your yml
+      EUREKA_URI: http://eureka-server:8761/eureka
+    networks:
+      - opticash-net
+
+  api-gateway:
+    build: ./api-gateway
+    image: api-gateway
+    container_name: api-gateway
+    depends_on:
+      - eureka-server
+    ports:
+      - "8080:8080"
+    environment:
+      EUREKA_URI: http://eureka-server:8761/eureka
+    networks:
+      - opticash-net
+
+  msvc-iam:
+    build: ./msvc-iam
+    image: msvc-iam
+    container_name: msvc-iam
+    depends_on:
+      - postgres
+      - eureka-server
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/opticash-iam-db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: ruben123
+      EUREKA_URI: http://eureka-server:8761/eureka
+    networks:
+      - opticash-net
+
+  msvc-bills:
+    build: ./msvc-bills
+    image: msvc-bills
+    container_name: msvc-bills
+    depends_on:
+      - postgres
+      - eureka-server
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/opticash-iam-db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: ruben123
+      EUREKA_URI: http://eureka-server:8761/eureka
+    networks:
+      - opticash-net
+
+  msvc-households:
+    build: ./msvc-households
+    image: msvc-households
+    container_name: msvc-households
+    depends_on:
+      - postgres
+      - eureka-server
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/opticash-iam-db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: ruben123
+      EUREKA_URI: http://eureka-server:8761/eureka
+    networks:
+      - opticash-net
+
+  msvc-contributions:
+    build: ./msvc-contributions
+    image: msvc-contributions
+    container_name: msvc-contributions
+    depends_on:
+      - postgres
+      - eureka-server
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/opticash-iam-db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: ruben123
+      EUREKA_URI: http://eureka-server:8761/eureka
+    networks:
+      - opticash-net
+
+  msvc-settings:
+    build: ./msvc-settings
+    image: msvc-settings
+    container_name: msvc-settings
+    depends_on:
+      - postgres
+      - eureka-server
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/opticash-iam-db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: ruben123
+      EUREKA_URI: http://eureka-server:8761/eureka
+    networks:
+      - opticash-net
+
+networks:
+  opticash-net:
+    driver: bridge
