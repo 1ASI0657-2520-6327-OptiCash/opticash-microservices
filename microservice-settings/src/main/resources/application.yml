@@ -3,7 +3,10 @@ server:
 
 spring:
   application:
-    name: msvc-settings
+    name: microservice-settings
+  cloud:
+    config:
+      enabled: false
   datasource:
     driver-class-name: org.postgresql.Driver
     url: ${SPRING_DATASOURCE_URL}
@@ -17,7 +20,7 @@ spring:
 
 eureka:
   instance:
-    hostname: msvc-settings
+    hostname: microservice-settings
   client:
     register-with-eureka: true
     fetch-registry: true

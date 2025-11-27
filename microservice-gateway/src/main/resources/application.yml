@@ -3,9 +3,11 @@ server:
 
 spring:
   application:
-    name: api-gateway
+    name: microservice-gateway
 
   cloud:
+    config:
+      enabled: false
     gateway:
       discovery:
         locator:
@@ -26,7 +28,7 @@ spring:
 
         # IAM public paths
         - id: iam-public
-          uri: lb://msvc-iam
+          uri: lb://microservice-iam
           predicates:
             - Path=/api/v1/authentication/**
           filters:
@@ -34,7 +36,7 @@ spring:
 
         # IAM secure
         - id: iam-secure
-          uri: lb://msvc-iam
+          uri: lb://microservice-iam
           predicates:
             - Path=/api/v1/users/**,/api/v1/roles/**
           filters:
@@ -42,7 +44,7 @@ spring:
 
         # Bills
         - id: bills
-          uri: lb://msvc-bills
+          uri: lb://microservice-bills
           predicates:
             - Path=/api/v1/bills/**
           filters:
@@ -50,7 +52,7 @@ spring:
 
         # Households
         - id: households
-          uri: lb://msvc-households
+          uri: lb://microservice-households
           predicates:
             - Path=/api/v1/households/**
           filters:
@@ -58,7 +60,7 @@ spring:
 
         # Household Members
         - id: household-members
-          uri: lb://msvc-households
+          uri: lb://microservice-households
           predicates:
             - Path=/api/v1/household-members/**
           filters:
@@ -66,7 +68,7 @@ spring:
 
         # Contributions
         - id: contributions
-          uri: lb://msvc-contributions
+          uri: lb://microservice-contributions
           predicates:
             - Path=/api/v1/contributions/**,/api/v1/member-contributions/**
           filters:
@@ -83,3 +85,4 @@ logging:
   level:
     org.springframework.cloud.gateway: DEBUG
     com.fiscalliance.gateway.filters: DEBUG
+

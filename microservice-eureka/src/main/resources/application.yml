@@ -3,8 +3,10 @@ server:
 
 spring:
   application:
-    name: msvc-eureka
-
+    name: microservice-eureka
+  cloud:
+    config:
+      enabled: false
 eureka:
   instance:
     hostname: eureka-server

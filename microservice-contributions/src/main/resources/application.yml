@@ -3,7 +3,10 @@ server:
 
 spring:
   application:
-    name: msvc-contributions
+    name: microservice-contributions
+  cloud:
+    config:
+      enabled: false
   datasource:
     driver-class-name: org.postgresql.Driver
     url: ${SPRING_DATASOURCE_URL}
@@ -17,15 +20,15 @@ spring:
 
 services:
   households:
-    url: lb://msvc-households
+    url: lb://microservice-households
   bills:
-    url: lb://msvc-bills
+    url: lb://microservice-bills
   iam:
-    url: lb://msvc-iam
+    url: lb://microservice-iam
 
 eureka:
   instance:
-    hostname: msvc-contributions
+    hostname: microservice-contributions
   client:
     register-with-eureka: true
     fetch-registry: true

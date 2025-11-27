@@ -15,21 +15,18 @@ services:
       - opticash-net
 
   eureka-server:
-    build: ./msvc-eureka
-    image: msvc-eureka
-    container_name: eureka-server
+    build: ./microservice-eureka
+    container_name: microservice-eureka
     ports:
       - "8761:8761"
     environment:
-      # optional if you use it in your yml
       EUREKA_URI: http://eureka-server:8761/eureka
     networks:
       - opticash-net
 
   api-gateway:
-    build: ./api-gateway
-    image: api-gateway
-    container_name: api-gateway
+    build: ./microservice-gateway
+    container_name: microservice-gateway
     depends_on:
       - eureka-server
     ports:
@@ -40,9 +37,8 @@ services:
       - opticash-net
 
   msvc-iam:
-    build: ./msvc-iam
-    image: msvc-iam
-    container_name: msvc-iam
+    build: ./microservice-iam
+    container_name: microservice-iam
     depends_on:
       - postgres
       - eureka-server
@@ -55,9 +51,8 @@ services:
       - opticash-net
 
   msvc-bills:
-    build: ./msvc-bills
-    image: msvc-bills
-    container_name: msvc-bills
+    build: ./microservice-bills
+    container_name: microservice-bills
     depends_on:
       - postgres
       - eureka-server
@@ -70,9 +65,8 @@ services:
       - opticash-net
 
   msvc-households:
-    build: ./msvc-households
-    image: msvc-households
-    container_name: msvc-households
+    build: ./microservice-households
+    container_name: microservice-households
     depends_on:
       - postgres
       - eureka-server
@@ -85,9 +79,8 @@ services:
       - opticash-net
 
   msvc-contributions:
-    build: ./msvc-contributions
-    image: msvc-contributions
-    container_name: msvc-contributions
+    build: ./microservice-contributions
+    container_name: microservice-contributions
     depends_on:
       - postgres
       - eureka-server
@@ -100,9 +93,8 @@ services:
       - opticash-net
 
   msvc-settings:
-    build: ./msvc-settings
-    image: msvc-settings
-    container_name: msvc-settings
+    build: ./microservice-settings
+    container_name: microservice-settings
     depends_on:
       - postgres
       - eureka-server
