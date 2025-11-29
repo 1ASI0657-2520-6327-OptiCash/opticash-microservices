@@ -17,12 +17,10 @@ spring:
       globalcors:
         corsConfigurations:
           '[/**]':
-            allowedOrigins:
-              - "http://localhost:4200"
-              - "http://localhost:5173"
+            allowedOrigins: "*"
             allowedMethods: "*"
             allowedHeaders: "*"
-            allowCredentials: true
+            allowCredentials: false
 
       routes:
 
@@ -31,8 +29,7 @@ spring:
           uri: lb://microservice-iam
           predicates:
             - Path=/api/v1/authentication/**
-          filters:
-            - StripPrefix=1
+          
 
         # IAM secure
         - id: iam-secure
@@ -86,3 +83,9 @@ logging:
     org.springframework.cloud.gateway: DEBUG
     com.fiscalliance.gateway.filters: DEBUG
 
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URI}
+  instance:
+    prefer-ip-address: true
