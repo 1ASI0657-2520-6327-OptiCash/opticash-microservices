@@ -22,6 +22,7 @@ spring:
               - "https://front-end-xxnb.vercel.app"
             allowedMethods: "*"
             allowedHeaders: "*"
+            exposedHeaders: "*"
             allowCredentials: true
 
       routes:
@@ -75,8 +76,6 @@ spring:
           filters:
             - JwtAuthenticationFilter
 
-      default-filters:
-        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
 
 jwt:
   secret: "mysupersecretkeythatshouldbeatleast32chars"
