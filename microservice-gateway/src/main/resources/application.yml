@@ -18,19 +18,10 @@ spring:
         add-to-simple-url-handler-mapping: true
         corsConfigurations:
           '[/**]':
-            allowedOrigins:
-              - "http://localhost:4200"
-              - "https://front-end-xxnb.vercel.app"
-            allowedMethods: 
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - PATCH
-              - OPTIONS
+            allowedOrigins: "*"
+            allowedMethods: "*"
             allowedHeaders: "*"
-            exposedHeaders: "*"
-            allowCredentials: true
+            allowCredentials: false
 
       routes:
 
@@ -45,8 +36,7 @@ spring:
         - id: iam-secure
           uri: lb://microservice-iam
           predicates:
-            - Path=/api/v1/users/**
-            - Path=/api/v1/roles/**
+            - Path=/api/v1/users/**,/api/v1/roles/**
           filters:
             - JwtAuthenticationFilter
 
@@ -78,10 +68,12 @@ spring:
         - id: contributions
           uri: lb://microservice-contributions
           predicates:
-            - Path=/api/v1/contributions/**
-            - Path=/api/v1/member-contributions/**
+            - Path=/api/v1/contributions/**,/api/v1/member-contributions/**
           filters:
             - JwtAuthenticationFilter
+
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
 
 
 jwt:

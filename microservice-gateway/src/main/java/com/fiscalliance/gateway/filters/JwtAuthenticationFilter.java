@@ -15,7 +15,6 @@ import org.springframework.web.server.ServerWebExchange;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 
-@Component
 public class JwtAuthenticationFilter extends AbstractGatewayFilterFactory<JwtAuthenticationFilter.Config> {
 
     @Value("${jwt.secret}")
