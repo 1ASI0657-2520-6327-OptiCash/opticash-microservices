@@ -17,10 +17,12 @@ spring:
       globalcors:
         corsConfigurations:
           '[/**]':
-            allowedOrigins: "*"
+            allowedOrigins:
+              - "http://localhost:4200"
+              - "https://front-end-xxnb.vercel.app"
             allowedMethods: "*"
             allowedHeaders: "*"
-            allowCredentials: false
+            allowCredentials: true
 
       routes:
 
