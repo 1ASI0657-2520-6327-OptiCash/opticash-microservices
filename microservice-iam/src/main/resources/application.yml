@@ -21,6 +21,7 @@ spring:
 eureka:
   instance:
     hostname: microservice-iam
+    non-secure-port: 8081
   client:
     register-with-eureka: true
     fetch-registry: true
